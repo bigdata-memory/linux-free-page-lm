@@ -30,6 +30,23 @@ bool page_poisoning_enabled(void)
 		debug_pagealloc_enabled()));
 }
 
+/**
+ * page_poison_val_get - get the page poison value if page poisoning is enabled
+ * @val: the caller's memory to get the page poison value
+ *
+ * Return true with @val stores the poison value if page poisoning is enabled.
+ * Otherwise, return false with @val unchanged.
+ */
+bool page_poison_val_get(u8 *val)
+{
+	if (!page_poisoning_enabled())
+		return false;
+
+	*val = PAGE_POISON;
+	return true;
+}
+EXPORT_SYMBOL_GPL(page_poison_val_get);
+
 static void poison_page(struct page *page)
 {
 	void *addr = kmap_atomic(page);
